@@ -12,24 +12,29 @@ public class DataProcessing {
 	}
 	
 	public static void run(int period) throws IOException{
-		
+		String temp ="";
 		int i=0;
+		
 		Long[] valueArray = new Long[period];
-		while(i<period-1){
-			valueArray[i++] = parse(InputFileReader.readLineFromFile());
+		while(i<period){
+			temp = InputFileReader.readLineFromFile();
+			valueArray[i++] = parse(temp);
 		}
+		Long currentSMA = SMA.calculatePeriodAvarage(valueArray, period);
+		OutputFileWriter.writeLineToFile(temp, currentSMA);
 		while(true){
-			String temp = InputFileReader.readLineFromFile();
+			temp = InputFileReader.readLineFromFile();
 			if (temp == null){
 				OutputFileWriter.close();
 				break;
 			}
-			StringBuilder builder = new StringBuilder();
-			valueArray[i++ % period] = parse(temp);
-			builder.append(temp).append(",").append(SMA.calculatePeriodAvarage(valueArray, period).toString());
-			System.out.println(builder.toString());
-			OutputFileWriter.writeLineToFile(builder.toString());
+			Long tempExcluded = valueArray[i % period];
+			valueArray[i % period] = parse(temp);
+			currentSMA = SMA.calculateSMA(tempExcluded, valueArray[i++ % period], currentSMA, period);
+			OutputFileWriter.writeLineToFile(temp, currentSMA);
 			
 		}
 	}
+	
+	
 }

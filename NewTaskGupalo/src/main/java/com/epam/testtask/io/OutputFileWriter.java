@@ -18,7 +18,7 @@ public final class OutputFileWriter {
 		writer = new BufferedWriter(new FileWriter(file, false));
 	}
 
-	public static void writeLineToFile(String data) throws IOException {
+	private static void writeToFile(String data) throws IOException {
 		if (writer == null){
 			init();
 		}
@@ -30,6 +30,12 @@ public final class OutputFileWriter {
 		writer.close();
 	}
 
+	public static void writeLineToFile(String temp, Long sma) throws IOException{
+		StringBuilder builder = new StringBuilder();
+		builder.append(temp).append(",").append(sma.toString());
+		System.out.println(builder.toString());
+		writeToFile(builder.toString());
+	}
 	
 	
 }

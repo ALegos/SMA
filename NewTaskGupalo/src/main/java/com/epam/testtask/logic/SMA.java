@@ -9,4 +9,11 @@ public class SMA {
 		}
 		return sum / period;
 	}
+	
+	public static Long calculateSMA(Long exluded, Long added, Long sma, int period){
+		
+		Long result =  sma - exluded/period + added/period;
+		
+		return result;
+	}
 }
